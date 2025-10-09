@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
+	"io/fs"
 
 	"github.com/rs/zerolog"
 	"github.com/valentin-kaiser/go-core/flag"
@@ -16,8 +17,8 @@ import (
 var (
 	loglevel int    = 1
 	port     uint16 = 8080
-	//go:embed index.html
-	index embed.FS
+	//go:embed static
+	static embed.FS
 )
 
 func init() {
@@ -57,8 +58,13 @@ func main() {
 		return
 	}
 
-	err := web.New().WithPort(port).WithCORSHeaders().WithGzip().WithLog().WithFS([]string{"/"}, index).Start().Error
+	files, err := fs.Sub(static, "static")
 	if err != nil {
-		panic(err)
+		log.Fatal().Err(err).Msg("failed to load static files")
+	}
+
+	err = web.New().WithPort(port).WithCORSHeaders().WithGzip().WithLog().WithFS([]string{"/"}, files).Start().Error
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to start web server")
 	}
 }
