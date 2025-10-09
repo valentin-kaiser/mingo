@@ -1,81 +1,161 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mingo – Mathe Bingo</title>
   <meta name="color-scheme" content="dark light">
   <style>
-    :root{
-      --bg:#0b1221;
-      --bg-2:#0f172a;
-      --card:#0e1629;
-      --soft:#1f2a44;
-      --muted:#94a3b8;
-      --text:#e5e7eb;
-      --accent:#22c55e;
-      --accent-2:#60a5fa;
-      --danger:#ef4444;
-      --radius:20px;
-      --shadow:0 20px 60px rgba(0,0,0,.45);
+    :root {
+      --bg: #0b1221;
+      --bg-2: #0f172a;
+      --card: #0e1629;
+      --soft: #1f2a44;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --accent: #22c55e;
+      --accent-2: #60a5fa;
+      --danger: #ef4444;
+      --radius: 20px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, .45);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       background:
         radial-gradient(1400px 900px at -10% -20%, #1e293b 0%, transparent 60%),
         radial-gradient(1200px 800px at 120% -10%, #0b2e4f 0%, transparent 55%),
         linear-gradient(180deg, var(--bg-2), var(--bg));
-      color:var(--text);
-      display:grid; grid-template-rows:auto 1fr auto; min-height:100dvh;
+      color: var(--text);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100dvh;
     }
 
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
-      padding:20px clamp(16px, 4vw, 40px);
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px clamp(16px, 4vw, 40px);
     }
-    .brand{display:flex; align-items:center; gap:14px;}
-    .logo{
-      width:54px; height:54px; border-radius:14px;
-      background:conic-gradient(from 230deg, var(--accent), var(--accent-2));
-      display:grid; place-items:center; box-shadow:var(--shadow); font-weight:900; color:#052013; letter-spacing:.5px;
-    }
-    .logo span{font-size:22px}
-    h1{margin:0; font-size:clamp(22px, 3.5vw, 32px)}
-    .subtitle{color:var(--muted); font-size:14px}
 
-    .toolbar{display:flex; gap:10px}
-    .btn{
-      appearance:none; border:1px solid var(--soft); background:#0b1221; color:var(--text);
-      padding:12px 16px; border-radius:12px; font-weight:700; cursor:pointer;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: conic-gradient(from 230deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      font-weight: 900;
+      color: #052013;
+      letter-spacing: .5px;
+    }
+
+    .logo span {
+      font-size: 22px
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3.5vw, 32px)
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--soft);
+      background: #0b1221;
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
       transition: transform .04s ease, filter .2s ease, background .2s ease, box-shadow .2s ease;
     }
-    .btn:hover{filter:brightness(1.05)}
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{background:linear-gradient(135deg, var(--accent), #25a06b); color:#02140b; border-color:transparent}
-    .btn.ghost{background:transparent}
-    .btn.danger{background:linear-gradient(135deg, var(--danger), #b91c1c); color:#220203; border-color:transparent}
+
+    .btn:hover {
+      filter: brightness(1.05)
+    }
+
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), #25a06b);
+      color: #02140b;
+      border-color: transparent
+    }
+
+    .btn.ghost {
+      background: transparent
+    }
+
+    .btn.danger {
+      background: linear-gradient(135deg, var(--danger), #b91c1c);
+      color: #220203;
+      border-color: transparent
+    }
 
     /* Main layout */
-    .stage{
-      display:grid; grid-template-rows: 1fr auto auto; gap:22px;
-      width:min(1100px, 100%); margin:0 auto; padding:10px clamp(12px, 4vw, 40px) 24px;
+    .stage {
+      /* display: grid; */
+      grid-template-rows: 1fr auto auto;
+      gap: 22px;
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 10px clamp(12px, 4vw, 40px) 24px;
     }
 
-    .board{
-      display:grid; place-items:center; text-align:center;
+    .board {
+      display: grid;
+      place-items: center;
+      text-align: center;
       padding: clamp(16px, 3vw, 28px);
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border:1px solid var(--soft); border-radius: var(--radius); box-shadow: var(--shadow);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, .01));
+      border: 1px solid var(--soft);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       min-height: 36dvh;
     }
-    .expression{
+
+    .expression {
       font-size: clamp(44px, 12vw, 120px);
-      font-weight: 900; letter-spacing: 1px; line-height: 1.05;
-      text-shadow: 0 8px 40px rgba(0,0,0,.35);
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 1.05;
+      text-shadow: 0 8px 40px rgba(0, 0, 0, .35);
     }
-    .expression.placeholder{
+
+    .expression.placeholder {
       opacity: 0.9;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       background-clip: text;
@@ -85,107 +165,251 @@
       animation: gradient-shift 3s ease-in-out infinite;
       color: var(--accent);
     }
-    @supports (background-clip: text) or (-webkit-background-clip: text) {
-      .expression.placeholder { color: transparent; }
-    }
-    @keyframes gradient-shift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-    .note{ color:var(--muted); margin-top: 12px; font-size: clamp(14px, 2.5vw, 18px); }
 
-    .buzzer-wrap{ display:grid; place-items:center; }
-    .buzzer{
-      width: clamp(120px, 20vw, 200px); height: clamp(120px, 20vw, 200px);
-      border-radius: 999px; border:none; cursor:pointer; 
+    @supports (background-clip: text) or (-webkit-background-clip: text) {
+      .expression.placeholder {
+        color: transparent;
+      }
+    }
+
+    @keyframes gradient-shift {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .note {
+      color: var(--muted);
+      margin-top: 12px;
+      font-size: clamp(14px, 2.5vw, 18px);
+    }
+
+    .buzzer-wrap {
+      display: grid;
+      margin: 30px;
+      place-items: center;
+    }
+
+    .buzzer {
+      width: clamp(120px, 20vw, 200px);
+      height: clamp(120px, 20vw, 200px);
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
       background: var(--danger);
       box-shadow:
-        0 15px 30px rgba(0,0,0,.45),
-        inset 0 8px 18px rgba(255,255,255,.15),
-        inset 0 -12px 18px rgba(0,0,0,.25);
+        0 15px 30px rgba(0, 0, 0, .45),
+        inset 0 8px 18px rgba(255, 255, 255, .15),
+        inset 0 -12px 18px rgba(0, 0, 0, .25);
       transition: transform .06s ease, filter .15s ease, opacity .15s ease;
-      display: flex; align-items: center; justify-content: center;
-      color: #ffffff; font-weight: 900; letter-spacing: 1px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 900;
+      letter-spacing: 1px;
       font-size: clamp(16px, 2.8vw, 24px);
-      text-shadow: 0 1px 2px rgba(0,0,0,.8);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, .8);
     }
-    .buzzer:active{ transform: translateY(4px) scale(.98); filter:brightness(.95); }
-    .buzzer[disabled]{
-      opacity:.55; filter:saturate(.6) brightness(.9);
-      cursor:not-allowed;
+
+    .buzzer:active {
+      transform: translateY(4px) scale(.98);
+      filter: brightness(.95);
+    }
+
+    .buzzer[disabled] {
+      opacity: .55;
+      filter: saturate(.6) brightness(.9);
+      cursor: not-allowed;
       box-shadow:
-        0 8px 18px rgba(0,0,0,.35),
-        inset 0 6px 12px rgba(255,255,255,.08),
-        inset 0 -8px 12px rgba(0,0,0,.18);
+        0 8px 18px rgba(0, 0, 0, .35),
+        inset 0 6px 12px rgba(255, 255, 255, .08),
+        inset 0 -8px 12px rgba(0, 0, 0, .18);
     }
 
-    .controls{ display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-    .list{
+    .list {
+      display: none;
       background: var(--card);
-      border:1px solid var(--soft); border-radius: var(--radius); box-shadow: var(--shadow);
-      padding:14px; min-height: 22dvh; max-height: 42dvh; overflow:auto;
+      border: 1px solid var(--soft);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      min-height: 22dvh;
+      max-height: 42dvh;
+      overflow: auto;
       transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease;
     }
-    .list table{ width:100%; border-collapse: collapse; font-size: clamp(14px, 2.2vw, 16px);}
-    .list th, .list td{ padding:10px 8px; border-bottom:1px dashed #243049; text-align:left; }
-    .list th{ position:sticky; top:0; background:#0c1527; z-index:1; }
-    .empty{ color:var(--muted); padding:20px; text-align:center; }
+
+    .list table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(14px, 2.2vw, 16px);
+    }
+
+    .list th,
+    .list td {
+      padding: 10px 8px;
+      border-bottom: 1px dashed #243049;
+      text-align: left;
+    }
+
+    .list th {
+      position: sticky;
+      top: 0;
+      background: #0c1527;
+      z-index: 1;
+    }
+
+    .note {
+      color: var(--muted);
+      padding: 20px;
+      text-align: center;
+    }
 
     /* Highlight der Liste nach Bingo */
-    .list.highlight{
+    .list.highlight {
       border-color: var(--accent-2);
-      box-shadow: 0 0 0 2px rgba(96,165,250,.6), 0 18px 60px rgba(0,0,0,.55);
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, .6), 0 18px 60px rgba(0, 0, 0, .55);
       animation: list-pop .35s ease-out;
       transform: translateY(-2px);
     }
-    @keyframes list-pop{
-      from{ transform: scale(.98); opacity:.98; }
-      to{ transform: scale(1); opacity:1; }
+
+    @keyframes list-pop {
+      from {
+        transform: scale(.98);
+        opacity: .98;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
-    .hidden{ display:none !important; }
-
-    footer{
-      padding:16px clamp(16px, 4vw, 40px); color:var(--muted); text-align:center; font-size:13px;
+    .hidden {
+      display: none !important;
     }
 
-    dialog::backdrop{ background: rgba(3,6,12,.6); }
-    dialog{ border:none; padding:0; background:transparent; }
-    .modal{
-      width:min(760px, 92vw);
-      background:linear-gradient(180deg, var(--card), var(--bg-2));
-      border:1px solid var(--soft); border-radius:16px; box-shadow: var(--shadow);
-      padding:18px;
-    }
-    .modal h3{ margin: 6px 0 12px 0; }
-    .settings{ display:grid; gap:14px; }
-    .row{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px;
-      border:1px solid var(--soft); background:#0b1221;
-    }
-    .chip input{ accent-color: var(--accent); width:18px; height:18px; }
-    .range input[type="range"]{ width:220px; }
-
-    .winner-glow{ animation: glow 1200ms ease-out 1 forwards; box-shadow: 0 0 0 rgba(34,197,94,0); }
-    @keyframes glow{
-      0%{ box-shadow: 0 0 0 rgba(34,197,94,0); }
-      40%{ box-shadow: 0 0 60px rgba(34,197,94,.7); }
-      100%{ box-shadow: 0 0 0 rgba(34,197,94,0); }
+    footer {
+      padding: 16px clamp(16px, 4vw, 40px);
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
     }
 
-    .celebration{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1000; }
-    .balloon{
-      position:absolute; bottom:-20vh; font-size: clamp(18px, 4vw, 42px); line-height:1;
+    dialog::backdrop {
+      background: rgba(3, 6, 12, .6);
+    }
+
+    dialog {
+      border: none;
+      padding: 0;
+      background: transparent;
+    }
+
+    .modal {
+      width: min(760px, 92vw);
+      background: linear-gradient(180deg, var(--card), var(--bg-2));
+      border: 1px solid var(--soft);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .modal h3 {
+      margin: 6px 0 12px 0;
+    }
+
+    .settings {
+      display: grid;
+      gap: 14px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--soft);
+      background: #0b1221;
+    }
+
+    .chip input {
+      accent-color: var(--accent);
+      width: 18px;
+      height: 18px;
+    }
+
+    .range input[type="range"] {
+      width: 220px;
+    }
+
+    .winner-glow {
+      animation: glow 1200ms ease-out 1 forwards;
+      box-shadow: 0 0 0 rgba(34, 197, 94, 0);
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 0 rgba(34, 197, 94, 0);
+      }
+
+      40% {
+        box-shadow: 0 0 60px rgba(34, 197, 94, .7);
+      }
+
+      100% {
+        box-shadow: 0 0 0 rgba(34, 197, 94, 0);
+      }
+    }
+
+    .celebration {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -20vh;
+      font-size: clamp(18px, 4vw, 42px);
+      line-height: 1;
       animation: rise var(--rise-duration) ease-in forwards;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .35));
     }
-    @keyframes rise{
-      to{ transform: translate3d(var(--rise-x), -120vh, 0) rotate(-4deg); opacity:.95; }
+
+    @keyframes rise {
+      to {
+        transform: translate3d(var(--rise-x), -120vh, 0) rotate(-4deg);
+        opacity: .95;
+      }
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="brand">
@@ -196,17 +420,18 @@
       </div>
     </div>
     <div class="toolbar">
-      <button class="btn ghost" id="openSettings" aria-haspopup="dialog" aria-controls="settingsDialog">⚙️ Einstellungen</button>
+      <button class="btn ghost" id="openSettings" aria-haspopup="dialog" aria-controls="settingsDialog">⚙️
+        Einstellungen</button>
       <button class="btn danger" id="resetBtn" title="Alle gespeicherten Aufgaben löschen">Zurücksetzen</button>
     </div>
   </header>
 
   <main class="stage" aria-live="polite">
     <section class="board" aria-labelledby="aufgabe-head">
-      <h2 id="aufgabe-head" class="visually-hidden" style="position:absolute; left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Aktuelle Aufgabe</h2>
+      <h2 id="aufgabe-head" class="visually-hidden"
+        style="position:absolute; left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Aktuelle Aufgabe</h2>
       <div>
         <div id="expression" class="expression placeholder">? × ?</div>
-        <div id="note" class="note">Klicke auf „Weiter“, um zu starten.</div>
       </div>
     </section>
 
@@ -219,8 +444,9 @@
       <button class="btn ghost" id="hideSolutionsBtn" hidden>Lösungen ausblenden</button>
     </section>
 
+    <div id="note" class="note">Noch keine Aufgaben. Klicke „Weiter“, um die erste zu erstellen.</div>
+
     <section class="list" id="listWrap" aria-label="Aufgabenliste">
-      <div class="empty">Noch keine Aufgaben. Klicke „Weiter“, um die erste zu erstellen.</div>
     </section>
   </main>
 
@@ -242,12 +468,13 @@
         </div>
         <div class="row range">
           <span class="chip">Zahlenbereich: <strong id="rangeLabel">1–10</strong></span>
-          <input type="range" id="rangeMax" min="5" max="100" step="5" value="10"/>
-          <label class="chip"><input type="checkbox" id="smallTimes"/> Nur kleines Einmaleins (1–10 × 1–10)</label>
+          <input type="range" id="rangeMax" min="5" max="100" step="5" value="10" />
+          <label class="chip"><input type="checkbox" id="smallTimes" /> Nur kleines Einmaleins (1–10 × 1–10)</label>
         </div>
         <div class="row">
-          <label class="chip"><input type="checkbox" id="noNegatives" checked/> Keine negativen Ergebnisse</label>
-          <label class="chip"><input type="checkbox" id="wholeDivision" checked/> Division nur mit ganzzahligem Ergebnis</label>
+          <label class="chip"><input type="checkbox" id="noNegatives" checked /> Keine negativen Ergebnisse</label>
+          <label class="chip"><input type="checkbox" id="wholeDivision" checked /> Division nur mit ganzzahligem
+            Ergebnis</label>
         </div>
       </div>
 
@@ -265,11 +492,11 @@
     const STORE_KEY = 'mingo-tasks';
     let tasks = loadTasks();
 
-    function loadTasks(){
-      try{ return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
-      catch{ return []; }
+    function loadTasks() {
+      try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+      catch { return []; }
     }
-    function saveTasks(){ localStorage.setItem(STORE_KEY, JSON.stringify(tasks)); }
+    function saveTasks() { localStorage.setItem(STORE_KEY, JSON.stringify(tasks)); }
 
     // ---------- DOM ----------
     const $ = sel => document.querySelector(sel);
@@ -286,7 +513,7 @@
 
     // ---------- Settings ----------
     const settings = {
-      get ops(){
+      get ops() {
         const ops = [];
         if ($('#opAdd').checked) ops.push('add');
         if ($('#opSub').checked) ops.push('sub');
@@ -294,89 +521,91 @@
         if ($('#opDiv').checked) ops.push('div');
         return ops.length ? ops : ['mul']; // Fallback
       },
-      get rangeMax(){ return parseInt($('#rangeMax').value, 10); },
-      get smallTimes(){ return $('#smallTimes').checked; },
-      get noNeg(){ return $('#noNegatives').checked; },
-      get wholeDiv(){ return $('#wholeDivision').checked; },
+      get rangeMax() { return parseInt($('#rangeMax').value, 10); },
+      get smallTimes() { return $('#smallTimes').checked; },
+      get noNeg() { return $('#noNegatives').checked; },
+      get wholeDiv() { return $('#wholeDivision').checked; },
     };
 
     // ---------- Helpers ----------
     const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-    function makeTask(){
+    function makeTask() {
       const ops = settings.ops;
       const op = ops[rndInt(0, ops.length - 1)];
-      let a,b,expr,answer;
+      let a, b, expr, answer;
 
-      if (op === 'mul'){
-        a = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
-        b = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
-        answer = a*b; expr = `${a} × ${b}`;
+      if (op === 'mul') {
+        a = settings.smallTimes ? rndInt(1, 10) : rndInt(1, settings.rangeMax);
+        b = settings.smallTimes ? rndInt(1, 10) : rndInt(1, settings.rangeMax);
+        answer = a * b; expr = `${a} × ${b}`;
         return { expr, answer, op, a, b, t: Date.now() };
       }
-      if (op === 'add'){
+      if (op === 'add') {
         a = rndInt(1, settings.rangeMax); b = rndInt(1, settings.rangeMax);
-        answer = a+b; expr = `${a} + ${b}`;
+        answer = a + b; expr = `${a} + ${b}`;
         return { expr, answer, op, a, b, t: Date.now() };
       }
-      if (op === 'sub'){
+      if (op === 'sub') {
         let x = rndInt(1, settings.rangeMax), y = rndInt(1, settings.rangeMax);
-        if (settings.noNeg && y > x) [x,y] = [y,x];
-        a=x; b=y; answer = a-b; expr = `${a} − ${b}`;
+        if (settings.noNeg && y > x) [x, y] = [y, x];
+        a = x; b = y; answer = a - b; expr = `${a} − ${b}`;
         return { expr, answer, op, a, b, t: Date.now() };
       }
       // div (default)
-      if (settings.wholeDiv){
-        const baseA = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
-        const baseB = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
+      if (settings.wholeDiv) {
+        const baseA = settings.smallTimes ? rndInt(1, 10) : rndInt(1, settings.rangeMax);
+        const baseB = settings.smallTimes ? rndInt(1, 10) : rndInt(1, settings.rangeMax);
         a = baseA * baseB; b = baseA; answer = baseB;
       } else {
         b = rndInt(1, settings.rangeMax);
-        a = rndInt(1, settings.rangeMax) * b; 
+        a = rndInt(1, settings.rangeMax) * b;
         answer = a / b;
       }
       expr = `${a} ÷ ${b}`;
       return { expr, answer, op, a, b, t: Date.now() };
     }
 
-    function showTask(task){
+    function showTask(task) {
       elExpression.textContent = task.expr;
       elExpression.dataset.answer = task.answer;
       elExpression.classList.remove('placeholder');
       elNote.textContent = 'Auf „Bingo!“ drücken, wenn ihr fertig seid – oder „Weiter“ für die nächste Aufgabe.';
     }
 
-    function setPlaceholder(){
+    function setPlaceholder() {
       elExpression.textContent = '? × ?';
       elExpression.removeAttribute('data-answer');
       elExpression.classList.add('placeholder');
     }
 
-    function clearTaskAfterBingo(){
+    function clearTaskAfterBingo() {
       setPlaceholder();
       elNote.textContent = '🎉 Bingo! Alle Lösungen unten sichtbar.';
     }
 
-    function addTask(task){
+    function addTask(task) {
       tasks.push(task);
       saveTasks();
       renderList(false);
       updateBingoState();
     }
 
-    function renderList(showAll = false){
-      if (!tasks.length){
-        listWrap.innerHTML = '<div class="empty">Noch keine Aufgaben. Klicke „Weiter“, um die erste zu erstellen.</div>';
+    function renderList(showAll = false) {
+      if (!tasks.length) {
+        listWrap.style.display = 'none';
+        elNote.textContent = 'Noch keine Aufgaben. Klicke „Weiter“, um die erste zu erstellen.';
         $('#hideSolutionsBtn').hidden = true;
         updateBingoState();
         return;
       }
-      const rows = tasks.map((t,i)=>`<tr>
-          <td style="width:42px; opacity:.7">${i+1}</td>
+      listWrap.style.display = 'block';
+      const rows = tasks.map((t, i) => `<tr>
+          <td style="width:42px; opacity:.7">${i + 1}</td>
           <td>${t.expr}</td>
           <td style="width:24px; text-align:center">=</td>
           <td><strong>${showAll ? t.answer : '✱'}</strong></td>
-        </tr>`).join('');
+        </tr>`).slice().reverse().join('');
       listWrap.innerHTML = `<table>
         <thead><tr><th>#</th><th>Aufgabe</th><th></th><th>Lösung</th></tr></thead>
         <tbody>${rows}</tbody></table>`;
@@ -384,18 +613,18 @@
       updateBingoState();
     }
 
-    function celebrate(count = 36){
+    function celebrate(count = 36) {
       const layer = $('#celebration');
       layer.innerHTML = '';
       const W = window.innerWidth;
-      for(let i=0;i<count;i++){
+      for (let i = 0; i < count; i++) {
         const b = document.createElement('span');
         b.className = 'balloon';
         b.textContent = '🎈';
-        const startX = Math.random()*W;
-        const drift = (Math.random()*2-1) * (W * .35);
-        const dur = (1 + Math.random()*3).toFixed(2) + 's';
-        const delay = (Math.random()*0.8).toFixed(2) + 's';
+        const startX = Math.random() * W;
+        const drift = (Math.random() * 2 - 1) * (W * .35);
+        const dur = (1 + Math.random() * 3).toFixed(2) + 's';
+        const delay = (Math.random() * 0.8).toFixed(2) + 's';
         b.style.left = startX + 'px';
         b.style.setProperty('--rise-duration', dur);
         b.style.setProperty('--rise-x', drift + 'px');
@@ -405,14 +634,14 @@
       cueGlowAndCleanup(9000);
     }
 
-    function cueGlowAndCleanup(timeout = 8000){
+    function cueGlowAndCleanup(timeout = 8000) {
       board.classList.add('winner-glow');
-      setTimeout(()=>board.classList.remove('winner-glow'), 1300);
-      setTimeout(()=>$('#celebration').innerHTML = '', timeout);
-      if (navigator.vibrate) navigator.vibrate([30,40,30]);
+      setTimeout(() => board.classList.remove('winner-glow'), 1300);
+      setTimeout(() => $('#celebration').innerHTML = '', timeout);
+      if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
     }
 
-    function updateBingoState(){
+    function updateBingoState() {
       const enabled = tasks.length >= 4;
       bingoBtn.disabled = !enabled;
       bingoBtn.setAttribute('aria-disabled', String(!enabled));
@@ -420,7 +649,7 @@
     }
 
     // ---------- Events ----------
-    $('#rangeMax').addEventListener('input', (e)=> $('#rangeLabel').textContent = `1–${e.target.value}`);
+    $('#rangeMax').addEventListener('input', (e) => $('#rangeLabel').textContent = `1–${e.target.value}`);
     $('#rangeLabel').textContent = `1–${$('#rangeMax').value}`;
 
     nextBtn.addEventListener('click', () => {
@@ -446,8 +675,8 @@
       controls.style.display = 'none';
       $('#hideSolutionsBtn').hidden = true;
       // Fokus auf Reset und zur Liste scrollen
-      resetBtn.focus({preventScroll:true});
-      listWrap.scrollIntoView({behavior:'smooth', block:'center'});
+      resetBtn.focus({ preventScroll: true });
+      listWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
       // Hinweistext für Reset
       elNote.textContent = '🎉 Bingo abgeschlossen. Zum Neustart bitte „Zurücksetzen“ drücken.';
     });
@@ -474,8 +703,8 @@
       updateBingoState();
     });
 
-    window.addEventListener('keydown', (e)=>{
-      if (e.key === 'Enter'){ e.preventDefault(); nextBtn.click(); }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); nextBtn.click(); }
     });
 
     $('#openSettings').addEventListener('click', () => settingsDialog.showModal());
@@ -484,15 +713,16 @@
     $('#saveSettings').addEventListener('click', () => settingsDialog.close());
 
     // ---------- Init ----------
-    if (tasks.length){
-      showTask(tasks[tasks.length-1]);
+    if (tasks.length) {
+      showTask(tasks[tasks.length - 1]);
       renderList(false);
     } else {
       setPlaceholder();
     }
     updateBingoState();
 
-    settingsDialog.addEventListener('cancel', (e)=>{ e.preventDefault(); settingsDialog.close(); });
+    settingsDialog.addEventListener('cancel', (e) => { e.preventDefault(); settingsDialog.close(); });
   </script>
 </body>
+
 </html>
