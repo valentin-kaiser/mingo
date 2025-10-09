@@ -119,19 +119,32 @@
         inset 0 -8px 12px rgba(0,0,0,.18);
     }
 
-    .controls{
-      display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
-    }
+    .controls{ display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
 
     .list{
       background: var(--card);
       border:1px solid var(--soft); border-radius: var(--radius); box-shadow: var(--shadow);
       padding:14px; min-height: 22dvh; max-height: 42dvh; overflow:auto;
+      transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease;
     }
     .list table{ width:100%; border-collapse: collapse; font-size: clamp(14px, 2.2vw, 16px);}
     .list th, .list td{ padding:10px 8px; border-bottom:1px dashed #243049; text-align:left; }
     .list th{ position:sticky; top:0; background:#0c1527; z-index:1; }
     .empty{ color:var(--muted); padding:20px; text-align:center; }
+
+    /* Highlight der Liste nach Bingo */
+    .list.highlight{
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 2px rgba(96,165,250,.6), 0 18px 60px rgba(0,0,0,.55);
+      animation: list-pop .35s ease-out;
+      transform: translateY(-2px);
+    }
+    @keyframes list-pop{
+      from{ transform: scale(.98); opacity:.98; }
+      to{ transform: scale(1); opacity:1; }
+    }
+
+    .hidden{ display:none !important; }
 
     footer{
       padding:16px clamp(16px, 4vw, 40px); color:var(--muted); text-align:center; font-size:13px;
@@ -155,10 +168,7 @@
     .chip input{ accent-color: var(--accent); width:18px; height:18px; }
     .range input[type="range"]{ width:220px; }
 
-    .winner-glow{
-      animation: glow 1200ms ease-out 1 forwards;
-      box-shadow: 0 0 0 rgba(34,197,94,0);
-    }
+    .winner-glow{ animation: glow 1200ms ease-out 1 forwards; box-shadow: 0 0 0 rgba(34,197,94,0); }
     @keyframes glow{
       0%{ box-shadow: 0 0 0 rgba(34,197,94,0); }
       40%{ box-shadow: 0 0 60px rgba(34,197,94,.7); }
@@ -166,24 +176,6 @@
     }
 
     .celebration{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1000; }
-
-    .celebration i{
-      position:absolute; width:10px; height:14px; 
-      top:-20px; opacity:.9; 
-      border-radius:2px;
-      animation: fall var(--fall-duration) linear forwards, spin 1.2s ease-in-out infinite;
-    }
-    @keyframes fall{
-      to{ 
-        transform: translate3d(var(--fall-x), 110vh, 0) rotate(var(--fall-rotation)); 
-        opacity: 0;
-      }
-    }
-    @keyframes spin{
-      0%, 100%{ transform: rotate(0deg); }
-      50%{ transform: rotate(var(--spin-rotation)); }
-    }
-
     .balloon{
       position:absolute; bottom:-20vh; font-size: clamp(18px, 4vw, 42px); line-height:1;
       animation: rise var(--rise-duration) ease-in forwards;
@@ -222,7 +214,7 @@
       <button id="bingoBtn" class="buzzer" aria-label="Bingo – Lösungen zeigen" disabled>BINGO!</button>
     </section>
 
-    <section class="controls">
+    <section class="controls" id="controls">
       <button class="btn primary" id="nextBtn">Weiter ➜</button>
       <button class="btn ghost" id="hideSolutionsBtn" hidden>Lösungen ausblenden</button>
     </section>
@@ -269,6 +261,7 @@
   <div class="celebration" id="celebration" aria-hidden="true"></div>
 
   <script>
+    // ---------- Storage ----------
     const STORE_KEY = 'mingo-tasks';
     let tasks = loadTasks();
 
@@ -276,16 +269,22 @@
       try{ return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
       catch{ return []; }
     }
-    function saveTasks(){
-      localStorage.setItem(STORE_KEY, JSON.stringify(tasks));
-    }
+    function saveTasks(){ localStorage.setItem(STORE_KEY, JSON.stringify(tasks)); }
 
+    // ---------- DOM ----------
     const $ = sel => document.querySelector(sel);
     const elExpression = $('#expression');
     const elNote = $('#note');
     const listWrap = $('#listWrap');
     const bingoBtn = $('#bingoBtn');
+    const nextBtn = $('#nextBtn');
+    const resetBtn = $('#resetBtn');
+    const controls = $('#controls');
+    const board = document.querySelector('.board');
+    const buzzerWrap = document.querySelector('.buzzer-wrap');
     const settingsDialog = $('#settingsDialog');
+
+    // ---------- Settings ----------
     const settings = {
       get ops(){
         const ops = [];
@@ -301,43 +300,42 @@
       get wholeDiv(){ return $('#wholeDivision').checked; },
     };
 
-    function rndInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+    // ---------- Helpers ----------
+    const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
     function makeTask(){
       const ops = settings.ops;
       const op = ops[rndInt(0, ops.length - 1)];
-
       let a,b,expr,answer;
 
       if (op === 'mul'){
-        if (settings.smallTimes){ a = rndInt(1,10); b = rndInt(1,10); }
-        else { a = rndInt(1, settings.rangeMax); b = rndInt(1, settings.rangeMax); }
+        a = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
+        b = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
         answer = a*b; expr = `${a} × ${b}`;
+        return { expr, answer, op, a, b, t: Date.now() };
       }
-      else if (op === 'add'){
+      if (op === 'add'){
         a = rndInt(1, settings.rangeMax); b = rndInt(1, settings.rangeMax);
         answer = a+b; expr = `${a} + ${b}`;
+        return { expr, answer, op, a, b, t: Date.now() };
       }
-      else if (op === 'sub'){
+      if (op === 'sub'){
         let x = rndInt(1, settings.rangeMax), y = rndInt(1, settings.rangeMax);
         if (settings.noNeg && y > x) [x,y] = [y,x];
         a=x; b=y; answer = a-b; expr = `${a} − ${b}`;
+        return { expr, answer, op, a, b, t: Date.now() };
       }
-      else if (op === 'div'){
-        if (settings.wholeDiv){
-          const baseA = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
-          const baseB = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
-          a = baseA * baseB; // Dividend
-          b = baseA;         // Divisor
-          answer = baseB;
-        } else {
-          b = rndInt(1, settings.rangeMax);
-          a = rndInt(1, settings.rangeMax) * b; 
-          answer = a / b;
-        }
-        expr = `${a} ÷ ${b}`;
+      // div (default)
+      if (settings.wholeDiv){
+        const baseA = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
+        const baseB = settings.smallTimes ? rndInt(1,10) : rndInt(1, settings.rangeMax);
+        a = baseA * baseB; b = baseA; answer = baseB;
+      } else {
+        b = rndInt(1, settings.rangeMax);
+        a = rndInt(1, settings.rangeMax) * b; 
+        answer = a / b;
       }
-
+      expr = `${a} ÷ ${b}`;
       return { expr, answer, op, a, b, t: Date.now() };
     }
 
@@ -360,7 +358,10 @@
     }
 
     function addTask(task){
-      tasks.push(task); saveTasks(); renderList(false); updateBingoState();
+      tasks.push(task);
+      saveTasks();
+      renderList(false);
+      updateBingoState();
     }
 
     function renderList(showAll = false){
@@ -393,7 +394,7 @@
         b.textContent = '🎈';
         const startX = Math.random()*W;
         const drift = (Math.random()*2-1) * (W * .35);
-        const dur = (5 + Math.random()*3).toFixed(2) + 's';
+        const dur = (1 + Math.random()*3).toFixed(2) + 's';
         const delay = (Math.random()*0.8).toFixed(2) + 's';
         b.style.left = startX + 'px';
         b.style.setProperty('--rise-duration', dur);
@@ -405,8 +406,8 @@
     }
 
     function cueGlowAndCleanup(timeout = 8000){
-      $('.board').classList.add('winner-glow');
-      setTimeout(()=>$('.board').classList.remove('winner-glow'), 1300);
+      board.classList.add('winner-glow');
+      setTimeout(()=>board.classList.remove('winner-glow'), 1300);
       setTimeout(()=>$('#celebration').innerHTML = '', timeout);
       if (navigator.vibrate) navigator.vibrate([30,40,30]);
     }
@@ -418,19 +419,37 @@
       bingoBtn.title = enabled ? 'Bingo – Lösungen zeigen' : 'Mindestens 4 Aufgaben nötig';
     }
 
+    // ---------- Events ----------
     $('#rangeMax').addEventListener('input', (e)=> $('#rangeLabel').textContent = `1–${e.target.value}`);
     $('#rangeLabel').textContent = `1–${$('#rangeMax').value}`;
 
-    $('#nextBtn').addEventListener('click', () => {
+    nextBtn.addEventListener('click', () => {
       const t = makeTask();
-      addTask(t); showTask(t);
+      addTask(t);
+      showTask(t);
     });
 
-    $('#bingoBtn').addEventListener('click', () => {
+    bingoBtn.addEventListener('click', () => {
       if (bingoBtn.disabled) return;
+
+      // Anzeigen & feiern
       clearTaskAfterBingo();
       renderList(true);
       celebrate();
+
+      // UI-Zustand: Aufgabe & Bingo-Button weg, Liste hervorheben, Weiter gesperrt
+      board.classList.add('hidden');
+      buzzerWrap.classList.add('hidden');
+      listWrap.classList.add('highlight');
+      nextBtn.hidden = true;
+      nextBtn.disabled = true;
+      controls.style.display = 'none';
+      $('#hideSolutionsBtn').hidden = true;
+      // Fokus auf Reset und zur Liste scrollen
+      resetBtn.focus({preventScroll:true});
+      listWrap.scrollIntoView({behavior:'smooth', block:'center'});
+      // Hinweistext für Reset
+      elNote.textContent = '🎉 Bingo abgeschlossen. Zum Neustart bitte „Zurücksetzen“ drücken.';
     });
 
     $('#hideSolutionsBtn').addEventListener('click', () => {
@@ -438,16 +457,25 @@
       elNote.textContent = 'Lösungen ausgeblendet. „Bingo!“ zeigt sie wieder an.';
     });
 
-    $('#resetBtn').addEventListener('click', () => {
+    resetBtn.addEventListener('click', () => {
       if (!confirm('Alle gespeicherten Aufgaben löschen?')) return;
-      tasks = []; saveTasks(); renderList(false);
+      tasks = [];
+      saveTasks();
+      renderList(false);
       setPlaceholder();
+      // UI zurücksetzen
+      board.classList.remove('hidden');
+      buzzerWrap.classList.remove('hidden');
+      listWrap.classList.remove('highlight');
+      nextBtn.hidden = false;
+      nextBtn.disabled = false;
+      controls.style.display = 'flex';
       elNote.textContent = 'Klicke auf „Weiter“, um zu starten.';
       updateBingoState();
     });
 
     window.addEventListener('keydown', (e)=>{
-      if (e.key === 'Enter'){ e.preventDefault(); $('#nextBtn').click(); }
+      if (e.key === 'Enter'){ e.preventDefault(); nextBtn.click(); }
     });
 
     $('#openSettings').addEventListener('click', () => settingsDialog.showModal());
@@ -455,8 +483,9 @@
     $('#cancelSettings').addEventListener('click', () => settingsDialog.close());
     $('#saveSettings').addEventListener('click', () => settingsDialog.close());
 
+    // ---------- Init ----------
     if (tasks.length){
-      showTask(tasks[tasks.length-1]); 
+      showTask(tasks[tasks.length-1]);
       renderList(false);
     } else {
       setPlaceholder();
