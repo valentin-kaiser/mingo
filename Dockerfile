@@ -1,13 +1,22 @@
 # syntax=docker/dockerfile:1
 
 
+FROM node:lts-slim AS frontend
+
+COPY ./application/frontend /app/frontend
+WORKDIR /app/frontend
+
+RUN npm install && \
+    npm run build
+
 FROM golang:1.25-alpine AS backend
 
 COPY . /app
+COPY --from=frontend /app/frontend/public /app/application/backend/static
 
 RUN apk add --no-cache git build-base
 
-WORKDIR /app
+WORKDIR /app/application/backend
 
 RUN GIT_TAG=$(git describe --tags || echo "v0.0.0") \
     && GIT_COMMIT=$(git rev-parse HEAD) \
