@@ -1,0 +1,15 @@
+{
+  "name": "mingo",
+  "version": "0.0.1",
+  "author": "Valentin Kaiser",
+  "homepage": "https://mingo.kaiser-bielefeld.de/",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
+  }
+}
