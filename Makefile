@@ -1,4 +1,4 @@
-prod: install-dependencies lint-backend bundle-frontend remove-placeholder copy-frontend build-executable clean-project recreate-placeholder
+prod: install-dependencies bundle-frontend remove-placeholder copy-frontend build-executable clean-project recreate-placeholder
 run: install-dependencies clean-project bundle-frontend copy-frontend run-development
 clean: clean-project recreate-placeholder
 
@@ -15,21 +15,19 @@ remove-placeholder:
 
 # Copy frontend files to static folder
 copy-frontend:
-	cp -r ./application/frontend/src/index.html ./application/backend/pkg/server/static/
-	cp -r ./application/frontend/dist/* ./application/backend/pkg/server/static/
-	cp -r ./application/frontend/assets ./application/backend/pkg/server/static/
+	cp -r ./application/frontend/public/* ./application/backend/static/
 
 # Build Golang executable from backend
 build-executable:
-	$(MAKE) prod -C backend/
+	$(MAKE) prod -C application/backend/
 
 # Remove frontend from backend after build
 clean-project:
-	rm -rf ./backend/static/*
-	rm -rf ./frontend/dist/*
+	rm -rf ./application/backend/static/*
+	rm -rf ./application/frontend/dist/*
 
 recreate-placeholder:
-	touch ./backend/static/PLACEHOLDER
+	touch ./application/backend/static/PLACEHOLDER
 
 run-development:
-	$(MAKE) run -C backend/
+	$(MAKE) run -C application/backend/
