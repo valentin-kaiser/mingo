@@ -5,11 +5,12 @@
   "homepage": "https://mingo.kaiser-bielefeld.de/",
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "clean": "rm -rf dist"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5173"
   },
-  "dependencies": {
-    "typescript": "^5.9.3"
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
   }
 }

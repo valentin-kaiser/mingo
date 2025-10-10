@@ -1,3 +1,4 @@
+import { Exercise } from "./exercise";
 
 export const elements = {
   expression: $('#expression'),
@@ -5,11 +6,24 @@ export const elements = {
   list: $('#list'),
   bingo: $button('#bingo'),
   next: $button('#next'),
+  new: $button('#new'),
+  continue: $button('#continue'),
   reset: $button('#reset'),
   controls: $('#controls'),
   board: $('#board'),
+  celebration: $('#celebration'),
+  progress: $('#progress'),
+  rounds: {
+    dialog: $dialog('#roundsDialog'),
+    open: $button('#roundsOpen'),
+    close: $button('#roundsClose'),
+    list: $('#roundsList'),
+  },
   settings: {
     dialog: $dialog('#settings'),
+    open: $button('#settingsOpen'),
+    close: $button('#settingsClose'),
+    save: $button('#settingsSave'),
     inputs: {
       addition: $input('#op-addition'),
       subtraction: $input('#op-subtraction'),
@@ -18,9 +32,29 @@ export const elements = {
       maxRange: $input('#max-range'),
       noNegative: $input('#no-negative'),
       wholeDivision: $input('#whole-division'),
-    }
+      duplicates: $input('#allow-duplicates'),
+    },
+    labels: {
+      maxRange: $('#max-range-label'),
+    },
   },
 };
+
+
+export function showExercise(exercise: Exercise | null) {
+  if (!exercise) return;
+  elements.expression.textContent = exercise.expression;
+  elements.expression.dataset.answer = exercise.answer.toString();
+  elements.expression.classList.remove('placeholder');
+  elements.note.textContent = 'Auf „Bingo!“ drücken, wenn ihr fertig seid – oder „Weiter“ für die nächste Aufgabe.';
+}
+
+export function showPlaceholder() {
+  elements.expression.textContent = '? ? ?';
+  elements.expression.removeAttribute('data-answer');
+  elements.expression.classList.add('placeholder');
+}
+
 
 function $(selector: string): HTMLElement {
   const el = document.querySelector<HTMLElement>(selector);

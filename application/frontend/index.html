@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mingo – Mathe Bingo</title>
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" type="image/png" href="/assets/icon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/assets/icon/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/icon/favicon.ico" />
+
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><span>M</span></div>
+      <div>
+        <h1>Mingo</h1>
+        <div class="subtitle">Bingo – Kleines Einmaleins & Grundrechenarten</div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn ghost" id="roundsOpen" title="Gespeicherte Runden anzeigen">📚 Runden</button>
+      <button class="btn ghost" id="settingsOpen" aria-haspopup="dialog" aria-controls="settings">⚙️
+        Einstellungen</button>
+      <button class="btn danger" id="reset" title="Alle gespeicherten Aufgaben löschen">Zurücksetzen</button>
+    </div>
+  </header>
+
+  <main class="stage" aria-live="polite">
+    <section class="board" id="board" aria-labelledby="exercise-head">
+      <div id="expression" class="expression placeholder">? ? ?</div>
+    </section>
+
+    <section class="buzzer-wrap">
+      <button id="bingo" class="buzzer" aria-label="Bingo – Lösungen zeigen" disabled>BINGO!</button>
+    </section>
+
+    <section class="controls" id="controls">
+      <button class="btn" id="next">Weiter ➜</button>
+      <button class="btn" hidden id="continue">Fortsetzen ⏩</button>
+      <button class="btn primary" hidden id="new">Neue Runde ⟳</button>
+    </section>
+    <div id="progress" class="progress" aria-live="polite" aria-atomic="true">0 / 0</div>
+
+    <div id="note" class="note">Noch keine Aufgaben. Klicke „Weiter“, um die erste zu erstellen.</div>
+
+    <section class="list" id="list" aria-label="Aufgabenliste">
+    </section>
+  </main>
+
+  <footer>Speichert Aufgaben lokal im Browser. Drücke <strong>Enter</strong> für „Weiter“.</footer>
+
+  <dialog id="settings" aria-labelledby="title">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+        <h3 id="title" style="margin:0;">Einstellungen</h3>
+        <button class="btn ghost" id="settingsClose" aria-label="Einstellungen schließen">✖</button>
+      </div>
+
+      <div class="settings" style="margin-top:8px;">
+        <div class="row" aria-label="Operationen">
+          <label class="chip"><input type="checkbox" id="op-addition" checked> Addition (+)</label>
+          <label class="chip"><input type="checkbox" id="op-subtraction" checked> Subtraktion (−)</label>
+          <label class="chip"><input type="checkbox" id="op-multiplication" checked> Multiplikation (×)</label>
+          <label class="chip"><input type="checkbox" id="op-division" checked> Division (÷)</label>
+        </div>
+        <div class="row range">
+          <span class="chip">Zahlenbereich: <strong id="max-range-label">1–10</strong></span>
+          <input type="range" id="max-range" min="5" max="100" step="5" value="10" />
+        </div>
+        <div class="row">
+          <label class="chip"><input type="checkbox" id="no-negative" checked /> Keine negativen Ergebnisse</label>
+          <label class="chip"><input type="checkbox" id="whole-division" checked /> Division nur mit ganzzahligem
+            Ergebnis</label>
+          <label class="chip"><input type="checkbox" id="allow-duplicates" /> Doppelte Ergebnisse erlauben</label>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button class="btn primary" id="settingsSave">OK</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="roundsDialog" aria-labelledby="roundsTitle">
+    <div class="modal large">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+        <h3 id="roundsTitle" style="margin:0;">Bisherige Runden</h3>
+        <button class="btn ghost" id="roundsClose" aria-label="Runden anzeigen schließen">✖</button>
+      </div>
+
+      <div id="roundsList" style="margin-top:8px; max-height:60vh; overflow:auto;"></div>
+    </div>
+  </dialog>
+
+  <div class="celebration" id="celebration"></div>
+
+  <script src="/src/main.ts" type="module" defer></script>
+</body>
+
+</html>

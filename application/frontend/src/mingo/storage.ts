@@ -1,3 +1,4 @@
+import { Deck, Exercise } from "./exercise";
 import { Round } from "./rounds";
 import { settings, Settings } from "./settings";
 
@@ -11,7 +12,8 @@ export function saveCurrentRound(round: Round | null): void {
 
 export function loadCurrentRound(): Round | null {
     const data = localStorage.getItem(STORAGE_CURRENT_ROUND_KEY);
-    return data ? JSON.parse(data) as Round : null;
+    const round = data ? JSON.parse(data) as { timestamp: string; exercises: any[], deck: {collection: Exercise[]}; bingo: boolean } : null;
+    return new Round(round?.timestamp ? new Date(round.timestamp) : new Date(), round?.exercises ?? [], new Deck(round?.deck.collection ?? []), round?.bingo ?? false);
 }
 
 export function saveSettings(settings: Settings): void {
@@ -29,5 +31,6 @@ export function saveRounds(rounds: Round[]): void {
 
 export function loadRounds(): Round[] {
     const data = localStorage.getItem(STORAGE_ROUNDS_KEY);
-    return data ? JSON.parse(data) as Round[] : [];
+    const rounds = data ? JSON.parse(data) as { timestamp: string; exercises: Exercise[], deck: {collection: Exercise[]}; bingo: boolean }[] : [];
+    return rounds.map(r => new Round(r.timestamp ? new Date(r.timestamp) : new Date(), r.exercises ?? [], new Deck(r.deck.collection ?? []), r.bingo ?? false));
 }

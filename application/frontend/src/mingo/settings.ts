@@ -1,11 +1,12 @@
 import * as dom from './dom';
-import { Operator } from './task';
+import { Operator } from './exercise';
 
 export type Settings = {
     operations: Operator[];
     maxRange: number;
     noNegative: boolean;
     wholeDivision: boolean;
+    duplicates: boolean;
 };
 
 export var settings: Settings = {
@@ -42,5 +43,11 @@ export var settings: Settings = {
     },
     set wholeDivision(value: boolean) {
         dom.elements.settings.inputs.wholeDivision.checked = value;
-    }
+    },
+    get duplicates(): boolean {
+        return dom.elements.settings.inputs.duplicates.checked;
+    },
+    set duplicates(value: boolean) {
+        dom.elements.settings.inputs.duplicates.checked = value;
+    },
 };

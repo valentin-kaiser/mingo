@@ -17,12 +17,6 @@ log.txt
 /.versions
 /coverage
 
-# Ionic
-/.ionic
-/www
-/platforms
-/plugins
-
 # Compiled output
 /dist
 /tmp
@@ -68,3 +62,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+public/
