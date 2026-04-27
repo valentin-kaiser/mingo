@@ -55,7 +55,7 @@ export class Deck {
                             break;
                         case '/':
                             if (settings.wholeDivision && a % b !== 0) continue;
-                            ans = a / b;
+                            ans = Math.round((a / b) * 100) / 100;
                             break;
                     }
 

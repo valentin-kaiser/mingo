@@ -24,6 +24,7 @@
     </div>
     <div class="toolbar">
       <button class="btn ghost" id="roundsOpen" title="Gespeicherte Runden anzeigen">📚 Runden</button>
+      <button class="btn ghost" id="sheetOpen" title="Bingo-Zettel generieren">🖨️ Zettel</button>
       <button class="btn ghost" id="settingsOpen" aria-haspopup="dialog" aria-controls="settings">⚙️
         Einstellungen</button>
       <button class="btn danger" id="reset" title="Alle gespeicherten Aufgaben löschen">Zurücksetzen</button>
@@ -97,7 +98,43 @@
     </div>
   </dialog>
 
+  <dialog id="sheetDialog" aria-labelledby="sheetTitle">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+        <h3 id="sheetTitle" style="margin:0;">Bingo-Zettel</h3>
+        <button class="btn ghost" id="sheetClose" aria-label="Zettel schließen">✖</button>
+      </div>
+
+      <div class="sheet-config">
+        <label class="chip">
+          Felder:
+          <select id="sheetGridSize" class="sheet-select">
+            <option value="3">3×3 (9 Felder)</option>
+            <option value="4">4×4 (16 Felder)</option>
+            <option value="5" selected>5×5 (25 Felder)</option>
+          </select>
+        </label>
+        <label class="chip"><input type="checkbox" id="sheetShowLogo" checked /> Logo</label>
+        <label class="chip"><input type="checkbox" id="sheetShowInstructions" checked /> Anleitung</label>
+        <label class="chip">
+          Exemplare:
+          <input type="number" id="sheetCopies" class="sheet-number" min="1" max="35" value="10" />
+        </label>
+        <button class="btn ghost" id="sheetRegenerate">⟳ Neu generieren</button>
+      </div>
+
+      <div id="sheetError" class="sheet-error hidden"></div>
+      <div id="sheetPreview" class="sheet-preview-wrap"></div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button class="btn primary" id="sheetPrint">🖨️ Drucken</button>
+      </div>
+    </div>
+  </dialog>
+
   <div class="celebration" id="celebration"></div>
+
+  <div id="printSheet" class="print-only"></div>
 
   <script src="/src/main.ts" type="module" defer></script>
 </body>

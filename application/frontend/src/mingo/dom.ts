@@ -19,6 +19,20 @@ export const elements = {
     close: $button('#roundsClose'),
     list: $('#roundsList'),
   },
+  sheet: {
+    dialog: $dialog('#sheetDialog'),
+    open: $button('#sheetOpen'),
+    close: $button('#sheetClose'),
+    gridSize: $select('#sheetGridSize'),
+    preview: $('#sheetPreview'),
+    error: $('#sheetError'),
+    print: $button('#sheetPrint'),
+    regenerate: $button('#sheetRegenerate'),
+    printContainer: $('#printSheet'),
+    showLogo: $input('#sheetShowLogo'),
+    showInstructions: $input('#sheetShowInstructions'),
+    copies: $input('#sheetCopies'),
+  },
   settings: {
     dialog: $dialog('#settings'),
     open: $button('#settingsOpen'),
@@ -77,5 +91,11 @@ function $button(selector: string): HTMLButtonElement {
 function $dialog(selector: string): HTMLDialogElement {
   const el = document.querySelector<HTMLDialogElement>(selector);
   if (!el) throw new Error(`Dialog not found: ${selector}`);
+  return el;
+}
+
+function $select(selector: string): HTMLSelectElement {
+  const el = document.querySelector<HTMLSelectElement>(selector);
+  if (!el) throw new Error(`Select not found: ${selector}`);
   return el;
 }
