@@ -6,12 +6,10 @@ updates:
     directory: "/application/backend"
     schedule:
       interval: "daily"
-    target-branch: "dependencies"
   - package-ecosystem: "npm"
     directory: "/application/frontend"
     schedule:
       interval: "daily"
-    target-branch: "dependencies"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
