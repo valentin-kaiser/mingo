@@ -2,12 +2,12 @@ module github.com/valentin-kaiser/mingo
 
 go 1.25.0
 
-require github.com/valentin-kaiser/go-core v1.9.4
+require github.com/valentin-kaiser/go-core v1.9.5
 
 require (
 	github.com/NYTimes/gziphandler v1.1.1 // indirect
 	github.com/ProtonMail/go-crypto v1.4.1 // indirect
-	github.com/ProtonMail/gopenpgp/v3 v3.4.0 // indirect
+	github.com/ProtonMail/gopenpgp/v3 v3.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
